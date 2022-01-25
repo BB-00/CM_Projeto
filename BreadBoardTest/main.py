@@ -37,7 +37,7 @@ s.setblocking(False)
 def check_downlink():
     print("Downlink Check", i)
 
-    s.settimeout(3.0) # configure a timeout value of 3 seconds
+    s.settimeout(2.0) # configure a timeout value of 3 seconds
 
     try:
         rx_pkt = s.recv(64) # get the packet received (if any)
