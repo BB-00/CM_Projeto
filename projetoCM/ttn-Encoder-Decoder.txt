@@ -1,0 +1,46 @@
+### DOWNLINK
+
+function encodeDownlink(input) {
+  var ledState = ["off","on"];
+  return {
+    bytes: [ledState.indexOf(input.data.ledState)],
+    fPort: 4,
+  };
+}
+
+function decodeDownlink(input) {
+  switch (input.fPort) {
+  case 4:
+    return {
+      data: {
+        ledState: ["off","on"][input.bytes[0]]
+      }
+    };
+  default:
+    throw Error("unknown FPort");
+  }
+}
+
+
+### UPLINK
+function decodeUplink(input) {
+  var data ={};
+  var events = {
+    1: "setup",
+    2: "interval",
+    3: "motion",
+    4: "button"
+  };
+  data.event = events[input.fPort];
+  if(input.bytes[0] === 0){
+    data.ledState = "off";
+    data.ledValue = "0x00";
+  }
+  else if(input.bytes[0] == 1){
+    data.ledState = "on";
+    data.ledValue = "0x01";
+  }
+  return {
+    data:data
+  };
+}
